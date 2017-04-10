@@ -1,0 +1,26 @@
+{
+  "name": "mp3fixer",
+  "version": "1.0.0",
+  "description": "Add lyrics and cover from Genius",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ichuyko/mp3fixer.git"
+  },
+  "author": "ichuyko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ichuyko/mp3fixer/issues"
+  },
+  "homepage": "https://github.com/ichuyko/mp3fixer#readme",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "genius-api": "^0.3.0",
+    "id3-writer": "^1.2.2",
+    "jsmediatags": "^3.4.0",
+    "lodash": "^4.17.4"
+  }
+}
