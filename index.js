@@ -25,7 +25,7 @@ var
 
 
 var args = process.argv;
-
+let cnt = 0;
 let stat = {};
 
 // getSongname("/Users/ichuyko/Music/iTunes/iTunes Media/Music/Alan Walker/Sing Me to Sleep/Sing Me to Sleep.mp3");
@@ -42,9 +42,9 @@ function main() {
   if (mp3Files && mp3Files.length > 0)
     mp3Files.forEach(function(mp3File) {
       fixMP3(mp3File).then(function(result) {
-        // console.log(result);
+        console.log(result);
       }).catch(function(err) {
-        // console.log(err);
+        console.log(err);
       });
     });
 }
@@ -69,16 +69,16 @@ function fixMP3(path2MP3){
 function getSongname(path2MP3){
   return new Promise(function(resolve, reject) {
 
-    var audioStream = fs.createReadStream(path2MP3)
+    // var audioStream = fs.createReadStream(path2MP3)
 
 // create a new music-metadata from a node ReadStream
-    mm2.parseStream(audioStream, {native: true}, function (err, metadata) {
-      // important note, the stream is not closed by default. To prevent leaks, you must close it yourself
-      audioStream.close();
-      if (err) throw err;
-
-      console.log(util.inspect(metadata, {showHidden: false, depth: null}));
-    });
+//     mm2.parseStream(audioStream, {native: true}, function (err, metadata) {
+//       important note, the stream is not closed by default. To prevent leaks, you must close it yourself
+      // audioStream.close();
+      // if (err) throw err;
+      //
+      // console.log(util.inspect(metadata, {showHidden: false, depth: null}));
+    // });
 
     // let buffer = fs.readFileSync(path2MP3)
     // ID3.parse(buffer).then(tag => {
@@ -97,10 +97,29 @@ function getSongname(path2MP3){
 
     jsmediatags.read(path2MP3, {
       onSuccess: function(tag) {
-        // console.log(tag);
+        console.log(path2MP3);
+        console.log(tag);
 
-        if (tag.version != "2.2.0"){
-          reject("Wring version: " + tag.version);
+        let title, artist, album, version, comment;
+
+        version = tag.version;
+        title = tag.tags.title;
+        artist = tag.tags.artist;
+        album = tag.tags.album;
+        comment = tag.tags.comment;
+
+        if (comment == app_id){
+          reject("Already fixed: comment = " + comment);
+          return;
+        }
+
+        if (!title){
+          reject("No title");
+          return;
+        }
+
+        if (!artist){
+          reject("No artist");
           return;
         }
 
@@ -110,28 +129,28 @@ function getSongname(path2MP3){
         // 2.3.0
         // 2.4.0
 
-        let sv = stat[tag.version];
-        if (!sv){
-          stat[tag.version] = {};
-          stat[tag.version].cnt = 1;
-        } else {
-          stat[tag.version].cnt = stat[tag.version].cnt + 1;
-        }
-
-        if (tag.tags && tag.tags.COMM){
-          if (tag.tags.COMM['length']){
-            console.log(tag.version + ' - ' + path2MP3);
-            console.log('tag.tags.COMM.length = ' + tag.tags.COMM.length);
-            console.log(tag.tags.COMM);
-          }
-        }
-
-        if (tag.tags && tag.tags.USLT){
-          if (tag.tags.USLT['length']){
-            console.log(tag.version + ' - ' + path2MP3);
-            console.log('tag.tags.USLT.length = ' + tag.tags.USLT.length);
-          }
-        }
+        // let sv = stat[tag.version];
+        // if (!sv){
+        //   stat[tag.version] = {};
+        //   stat[tag.version].cnt = 1;
+        // } else {
+        //   stat[tag.version].cnt = stat[tag.version].cnt + 1;
+        // }
+        //
+        // if (tag.tags && tag.tags.COMM){
+        //   if (tag.tags.COMM['length']){
+        //     console.log(tag.version + ' - ' + path2MP3);
+        //     console.log('tag.tags.COMM.length = ' + tag.tags.COMM.length);
+        //     console.log(tag.tags.COMM);
+        //   }
+        // }
+        //
+        // if (tag.tags && tag.tags.USLT){
+        //   if (tag.tags.USLT['length']){
+        //     console.log(tag.version + ' - ' + path2MP3);
+        //     console.log('tag.tags.USLT.length = ' + tag.tags.USLT.length);
+        //   }
+        // }
 
         // if (tag.tags.lyrics && tag.tags.lyrics.lyrics){
         //   let lyrics = tag.tags.lyrics.lyrics;
@@ -149,16 +168,8 @@ function getSongname(path2MP3){
         //   }
         // }
 
-        let search_song_name = tag.tags.artist;//.trim();
-
-        if (!search_song_name)
-          search_song_name = tag.tags.album;//.trim();
-
-        if (tag.tags.title)
-          search_song_name = search_song_name + ' - ' + tag.tags.title;//.trim();
-
+        let search_song_name = artist.trim() + " - " + title.trim();
         resolve(search_song_name);
-
       },
       onError: function(error) {
         console.log(':(', error.type, error.info);
