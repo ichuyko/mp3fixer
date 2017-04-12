@@ -2,6 +2,11 @@
 Add lyrics and cover from Genius
 
 
+Core issue is correct reading id3 tags in different versions!  
+==
+
+All libs is not correct. 
+
 It's similar to https://www.npmjs.com/package/lyrictagger
 =======
 
@@ -29,7 +34,7 @@ Release notes
 
 **v2.1.0**
 * Found similar: https://www.npmjs.com/package/lyrictagger
-* It has same issue :(
+* It has same issues :(
 
 
 **v1.0.0**
