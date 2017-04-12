@@ -1,6 +1,6 @@
 {
   "name": "mp3fixer",
-  "version": "1.0.1",
+  "version": "2.1.0",
   "description": "Add lyrics and cover from Genius",
   "main": "index.js",
   "scripts": {

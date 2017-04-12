@@ -2,6 +2,8 @@
 Add lyrics and cover from Genius
 
 
+It's similar to https://www.npmjs.com/package/lyrictagger
+=======
 
 Configuration
 =======================================
@@ -24,6 +26,11 @@ How to run
 
 Release notes
 =======================================
+
+**v2.1.0**
+* Found similar: https://www.npmjs.com/package/lyrictagger
+* It has same issue :(
+
 
 **v1.0.0**
 * all except writign lyrics to mp3
